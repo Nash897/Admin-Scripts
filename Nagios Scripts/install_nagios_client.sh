@@ -22,7 +22,14 @@ service ntpd start
 service iptables stop
 chkconfig iptables off
 
+#Enable swap memory
+echo "The following process is creating a reserved swap memory and will take atleast 1 min"
+dd if=/dev/zero of=/swap bs=1024 count=2097152
+mkswap /swap && chown root. /swap && chmod 0600 /swap && swapon /swap
+echo /swap swap swap defaults 0 0 >> /etc/fstab
+echo vm.swappiness = 0 >> /etc/sysctl.conf && sysctl -p
 
+clear
 #Configure
 echo "***************************************************************************"
 echo "Enter the Nagios Server IP Address:"
