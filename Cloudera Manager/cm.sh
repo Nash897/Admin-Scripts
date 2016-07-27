@@ -5,16 +5,16 @@
 #Notes: Run as a root
 ###########################################################
 
-yum-complete-transaction
-yum clean all
-
 sync; echo 1 > /proc/sys/vm/drop_caches
 
 echo "Enter the common root password for your nodes:"
-read z
+read -s z
 
 echo "Enter the IP address for the mysql database:"
 read m
+
+yum-complete-transaction
+yum clean all
 
 #distribute the passwordless keys to all the nodes
 ssh-keygen -t rsa
@@ -41,6 +41,9 @@ scp /root/mysql.sh root@$m:/root/mysql.sh
 
 #Run the mysql script on mysql server
 ssh root@$m bash /root/mysql.sh > /root/mysql.log	
+
+# Installing java
+yum install java-1.8.0-openjdk -y
 
 yum-complete-transaction
 yum clean all
